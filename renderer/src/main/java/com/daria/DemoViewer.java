@@ -33,14 +33,24 @@ public class DemoViewer {
                     //create a tetrahedron
                     Tetrahedron tetrahedron = creatTetrahedron();
                     
+                    //heading for left-right rotation
                     double heading = Math.toRadians(headingSlider.getValue());
 
                     //create matrix and display it
-                    Matrix3 transform = new Matrix3(new double[] {
-                            Math.cos(heading), 0, -Math.sin(heading),
-                            0, 1, 0,
-                            Math.sin(heading), 0, Math.cos(heading)
+                    Matrix3 headingTransform = new Matrix3(new double[] {
+                        Math.cos(heading), 0, Math.sin(heading),
+                        0, 1, 0,
+                        -Math.sin(heading), 0, Math.cos(heading)
+                    });
+
+                    //pitch for up-down rotation
+                    double pitch = Math.toRadians(pitchSlider.getValue());
+                    Matrix3 pitchTransform = new Matrix3(new double[] {
+                            1, 0, 0,
+                            0, Math.cos(pitch), Math.sin(pitch),
+                            0, -Math.sin(pitch), Math.cos(pitch)
                         });
+                    Matrix3 transform = headingTransform.multiply(pitchTransform);
 
                     g2.translate(getWidth() / 2, getHeight() / 2);
                     g2.setColor(Color.WHITE);
