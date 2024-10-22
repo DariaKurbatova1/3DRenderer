@@ -1,15 +1,16 @@
 package com.daria;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.daria.Triangle;
 
 public class Tetrahedron {
-    Triangle t1;
-    Triangle t2;
-    Triangle t3;
-    Triangle t4;
-    Tetrahedron(Triangle t1, Triangle t2, Triangle t3, Triangle t4){
-        this.t1 = t1;
-        this.t2 = t2;
-        this.t3= t3;
-        this.t4 = t4;
+    List<Triangle> triangles = new ArrayList<>();
+    Tetrahedron(List<Triangle> triangles){
+        // if(triangles.size() != 4){
+        //     throw new Exception("Triangle list passed to Tetrahedron must be of size 4.");
+        // }
+        this.triangles = triangles; 
+        
     }
 }
