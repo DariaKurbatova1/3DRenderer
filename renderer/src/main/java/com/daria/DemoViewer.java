@@ -6,6 +6,7 @@ import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import com.daria.Triangle;
 import com.daria.Tetrahedron;
+
 //import Path2D;
 public class DemoViewer {
 
@@ -42,6 +43,7 @@ public class DemoViewer {
                         path.closePath();
                         g2.draw(path);
                     }
+                    
                     
                 }
             };
