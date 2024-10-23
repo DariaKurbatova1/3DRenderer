@@ -172,7 +172,16 @@ public class DemoViewer {
         });
 
         cubeButton.addActionListener(e -> {
-            //add code to show cube later
+            //remove choices and show cube
+            pane.remove(shapeSelectionPanel);
+            JPanel renderPanel = showCube(headingSlider, pitchSlider);
+            pane.add(renderPanel, BorderLayout.CENTER);
+
+            headingSlider.addChangeListener(evt -> renderPanel.repaint());
+            pitchSlider.addChangeListener(evt -> renderPanel.repaint());
+
+            pane.revalidate();
+            pane.repaint();
         });
 
         sphereButton.addActionListener(e -> {
@@ -293,6 +302,17 @@ public class DemoViewer {
         
     };
     return renderPanel;
+    }
+    public static JPanel showCube(JSlider headingSlider, JSlider pitchSlider){
+        JPanel renderPanel = new JPanel(){
+            public void paintComponent(Graphics graphics){
+                Graphics2D graphics2d = (Graphics2D) graphics;
+                graphics2d.setColor(Color.BLACK);
+                graphics2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+            
+        };
+        return renderPanel;
     }
     //https://craigrichardsonportfolio.wordpress.com/2016/03/04/defining-a-3d-cube-multiple-coordinate-spaces/
     public static Cube createCube() {
