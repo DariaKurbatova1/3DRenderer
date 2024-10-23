@@ -308,6 +308,7 @@ public class DemoViewer {
                 //get transformed matrix
                 Matrix3 transform = createTransformedMatrix(heading, pitch);
                 
+                BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 
             }
@@ -331,6 +332,14 @@ public class DemoViewer {
         //multiply matrices
         Matrix3 transformed = headingTransform.multiply(pitchTransform);
         return transformed;
+    }
+    public static double[] createZBuffer(BufferedImage img){
+        double[] zBuffer = new double[img.getWidth() * img.getHeight()];
+        // initialize array with extremely far away depths
+        for (int q = 0; q < zBuffer.length; q++) {
+            zBuffer[q] = Double.NEGATIVE_INFINITY;
+        }
+        return zBuffer;
     }
     //https://craigrichardsonportfolio.wordpress.com/2016/03/04/defining-a-3d-cube-multiple-coordinate-spaces/
     public static Cube createCube() {
