@@ -309,10 +309,40 @@ public class DemoViewer {
                 Graphics2D graphics2d = (Graphics2D) graphics;
                 graphics2d.setColor(Color.BLACK);
                 graphics2d.fillRect(0, 0, getWidth(), getHeight());
+
+                Cube cube = createCube();
+                //left-right rotation
+                double heading = Math.toRadians(headingSlider.getValue());
+
+                //up-down rotation
+                double pitch = Math.toRadians(pitchSlider.getValue());
+
+                //get transformed matrix
+                Matrix3 transform = createTransformedMatrix(heading, pitch);
+                
+
+
             }
             
         };
         return renderPanel;
+    }
+    public static Matrix3 createTransformedMatrix(double heading, double pitch){
+        //matrix for left-right rotation
+        Matrix3 headingTransform = new Matrix3(new double[] {
+            Math.cos(heading), 0, Math.sin(heading),
+            0, 1, 0,
+            -Math.sin(heading), 0, Math.cos(heading)
+        });
+        //matrix for up-down rotation
+        Matrix3 pitchTransform = new Matrix3(new double[] {
+            1, 0, 0,
+            0, Math.cos(pitch), Math.sin(pitch),
+            0, -Math.sin(pitch), Math.cos(pitch)
+        });
+        //multiply matrices
+        Matrix3 transformed = headingTransform.multiply(pitchTransform);
+        return transformed;
     }
     //https://craigrichardsonportfolio.wordpress.com/2016/03/04/defining-a-3d-cube-multiple-coordinate-spaces/
     public static Cube createCube() {
