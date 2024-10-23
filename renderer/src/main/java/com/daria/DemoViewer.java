@@ -134,16 +134,26 @@ public class DemoViewer {
     }
     public static JPanel showShapeChoices(Container pane, JSlider headingSlider, JSlider pitchSlider) {
         JPanel shapeSelectionPanel = new JPanel();
-        shapeSelectionPanel.setLayout(new GridLayout(1, 3));
+        shapeSelectionPanel.setLayout(new BorderLayout());
+
+        //create message
+        JLabel choiceLabel = new JLabel("Please choose the shape you would like to render", JLabel.CENTER);
+        choiceLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        shapeSelectionPanel.add(choiceLabel, BorderLayout.NORTH);
 
         //create buttons for shape choices
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(1, 3));
         JButton tetrahedronButton = new JButton("Tetrahedron");
         JButton cubeButton = new JButton("Cube");
         JButton sphereButton = new JButton("Sphere");
 
-        shapeSelectionPanel.add(tetrahedronButton);
-        shapeSelectionPanel.add(cubeButton);
-        shapeSelectionPanel.add(sphereButton);
+        buttonPanel.add(tetrahedronButton);
+        buttonPanel.add(cubeButton);
+        buttonPanel.add(sphereButton);
+
+        //add button pannel to shape selection pannel
+        shapeSelectionPanel.add(buttonPanel, BorderLayout.CENTER);
 
         tetrahedronButton.addActionListener(e -> {
             //remove choices and show tetrahedron
