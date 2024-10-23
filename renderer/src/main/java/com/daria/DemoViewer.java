@@ -141,8 +141,6 @@ public class DemoViewer {
         choiceLabel.setLineWrap(true);
         choiceLabel.setFont(new Font("Arial", Font.BOLD, 20));
         choiceLabel.setWrapStyleWord(true);
-        // JLabel choiceLabel = new JLabel("Please choose the shape you would like to render", JLabel.CENTER);
-        // choiceLabel.setFont(new Font("Arial", Font.BOLD, 20));
         
         shapeSelectionPanel.add(choiceLabel, BorderLayout.NORTH);
 
