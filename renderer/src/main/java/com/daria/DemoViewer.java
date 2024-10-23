@@ -205,23 +205,11 @@ public class DemoViewer {
             //heading for left-right rotation
             double heading = Math.toRadians(headingSlider.getValue());
 
-            //create matrix and display it
-            Matrix3 headingTransform = new Matrix3(new double[] {
-                Math.cos(heading), 0, Math.sin(heading),
-                0, 1, 0,
-                -Math.sin(heading), 0, Math.cos(heading)
-            });
-
             //pitch for up-down rotation
             double pitch = Math.toRadians(pitchSlider.getValue());
-            Matrix3 pitchTransform = new Matrix3(new double[] {
-                    1, 0, 0,
-                    0, Math.cos(pitch), Math.sin(pitch),
-                    0, -Math.sin(pitch), Math.cos(pitch)
-                });
 
             //combining the matrixes by multipliying them
-            Matrix3 transform = headingTransform.multiply(pitchTransform);
+            Matrix3 transform = createTransformedMatrix(heading, pitch);
 
             BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 
