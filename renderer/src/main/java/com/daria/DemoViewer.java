@@ -122,7 +122,32 @@ public class DemoViewer {
             //remove panel after start is clicked
             pane.remove(welcomePanel);
 
-            //show tetrahedron
+            //show shape choices to user
+            JPanel shapeChoicesPanel = showShapeChoices(pane, headingSlider, pitchSlider);
+            pane.add(shapeChoicesPanel, BorderLayout.CENTER);
+
+            pane.revalidate();
+            pane.repaint();
+        });
+
+        return welcomePanel;
+    }
+    public static JPanel showShapeChoices(Container pane, JSlider headingSlider, JSlider pitchSlider) {
+        JPanel shapeSelectionPanel = new JPanel();
+        shapeSelectionPanel.setLayout(new GridLayout(1, 3));
+
+        //create buttons for shape choices
+        JButton tetrahedronButton = new JButton("Tetrahedron");
+        JButton cubeButton = new JButton("Cube");
+        JButton sphereButton = new JButton("Sphere");
+
+        shapeSelectionPanel.add(tetrahedronButton);
+        shapeSelectionPanel.add(cubeButton);
+        shapeSelectionPanel.add(sphereButton);
+
+        tetrahedronButton.addActionListener(e -> {
+            //remove choices and show tetrahedron
+            pane.remove(shapeSelectionPanel);
             JPanel renderPanel = showTetrahedron(headingSlider, pitchSlider);
             pane.add(renderPanel, BorderLayout.CENTER);
 
@@ -133,8 +158,17 @@ public class DemoViewer {
             pane.repaint();
         });
 
-        return welcomePanel;
+        cubeButton.addActionListener(e -> {
+            //add code to show cube later
+        });
+
+        sphereButton.addActionListener(e -> {
+            //add code to show sphere later
+        });
+
+        return shapeSelectionPanel;
     }
+
 
     public static JPanel showTetrahedron(JSlider headingSlider, JSlider pitchSlider){
         JPanel renderPanel = new JPanel() {
