@@ -294,4 +294,28 @@ public class DemoViewer {
     };
     return renderPanel;
     }
+    //https://craigrichardsonportfolio.wordpress.com/2016/03/04/defining-a-3d-cube-multiple-coordinate-spaces/
+    public static Cube createCube() {
+        java.util.List<Square> squares = new ArrayList<>();
+        
+        //create vertices of the cube (each corner point)
+        Vertex v1 = new Vertex(-100, -100, -100);
+        Vertex v2 = new Vertex(100, -100, -100);
+        Vertex v3 = new Vertex(100, 100, -100);
+        Vertex v4 = new Vertex(-100, 100, -100);
+        Vertex v5 = new Vertex(-100, -100, 100);
+        Vertex v6 = new Vertex(100, -100, 100);
+        Vertex v7 = new Vertex(100, 100, 100);
+        Vertex v8 = new Vertex(-100, 100, 100);
+        
+        //create faces of cube with 4 corners on eachh
+        squares.add(new Square(v1, v2, v3, v4, Color.RED));  
+        squares.add(new Square(v5, v6, v7, v8, Color.GREEN));  
+        squares.add(new Square(v1, v2, v6, v5, Color.BLUE));  
+        squares.add(new Square(v4, v3, v7, v8, Color.YELLOW));  
+        squares.add(new Square(v2, v3, v7, v6, Color.CYAN));   
+        squares.add(new Square(v1, v4, v8, v5, Color.MAGENTA)); 
+    
+        return new Cube(squares);
+    }
 }
