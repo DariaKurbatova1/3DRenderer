@@ -137,8 +137,13 @@ public class DemoViewer {
         shapeSelectionPanel.setLayout(new BorderLayout());
 
         //create message
-        JLabel choiceLabel = new JLabel("Please choose the shape you would like to render", JLabel.CENTER);
+        JTextArea choiceLabel = new JTextArea("Please choose the shape you would like to render");
+        choiceLabel.setLineWrap(true);
         choiceLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        choiceLabel.setWrapStyleWord(true);
+        // JLabel choiceLabel = new JLabel("Please choose the shape you would like to render", JLabel.CENTER);
+        // choiceLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        
         shapeSelectionPanel.add(choiceLabel, BorderLayout.NORTH);
 
         //create buttons for shape choices
