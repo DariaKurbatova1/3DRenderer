@@ -25,7 +25,7 @@ public class DemoViewer {
         pane.add(pitchSlider, BorderLayout.EAST);
 
         //display welcome message
-        JPanel welcomePanel = showIntro(pane, frame);
+        JPanel welcomePanel = showIntro(pane, frame, headingSlider, pitchSlider);
         // panel to display render results
         JPanel renderPanel = showTetrahedron( headingSlider, pitchSlider);
         
@@ -106,7 +106,7 @@ public class DemoViewer {
         Tetrahedron tetrahedron = new Tetrahedron(tris);
         return tetrahedron;
     }
-    public static JPanel showIntro(Container pane, JFrame frame){
+    public static JPanel showIntro(Container pane, JFrame frame, JSlider headingSlider, JSlider pitchSlider){
         JPanel welcomePanel = new JPanel();
         welcomePanel.setLayout(new BorderLayout());
 
@@ -122,15 +122,12 @@ public class DemoViewer {
             //remove panel after start is clicked
             pane.remove(welcomePanel);
 
-            //create sliders
-            JSlider headingSlider = new JSlider(0, 360, 180);
-            JSlider pitchSlider = new JSlider(SwingConstants.VERTICAL, -90, 90, 0);
+            //show tetrahedron
             JPanel renderPanel = showTetrahedron(headingSlider, pitchSlider);
-
-            //add slider to pane
-            pane.add(headingSlider, BorderLayout.SOUTH);
-            pane.add(pitchSlider, BorderLayout.EAST);
             pane.add(renderPanel, BorderLayout.CENTER);
+
+            headingSlider.addChangeListener(evt -> renderPanel.repaint());
+            pitchSlider.addChangeListener(evt -> renderPanel.repaint());
 
             pane.revalidate();
             pane.repaint();
