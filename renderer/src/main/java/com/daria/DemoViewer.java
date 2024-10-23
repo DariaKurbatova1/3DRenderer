@@ -24,11 +24,13 @@ public class DemoViewer {
         JSlider pitchSlider = new JSlider(SwingConstants.VERTICAL, -90, 90, 0);
         pane.add(pitchSlider, BorderLayout.EAST);
 
+        //display welcome message
+        JPanel welcomePanel = showIntro(pane, frame);
         // panel to display render results
         JPanel renderPanel = showTetrahedron( headingSlider, pitchSlider);
         
         
-        pane.add(renderPanel, BorderLayout.CENTER);
+        pane.add(welcomePanel, BorderLayout.CENTER);
 
         headingSlider.addChangeListener(e -> renderPanel.repaint());
         pitchSlider.addChangeListener(e -> renderPanel.repaint());
@@ -103,6 +105,38 @@ public class DemoViewer {
                 ));
         Tetrahedron tetrahedron = new Tetrahedron(tris);
         return tetrahedron;
+    }
+    public static JPanel showIntro(Container pane, JFrame frame){
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setLayout(new BorderLayout());
+
+        JLabel welcomeLabel = new JLabel("Welcome to the 3D Renderer!", JLabel.CENTER);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        welcomePanel.add(welcomeLabel, BorderLayout.CENTER);
+
+        //start button to show renderer
+        JButton startButton = new JButton("Start");
+        welcomePanel.add(startButton, BorderLayout.SOUTH);
+
+        startButton.addActionListener(e -> {
+            //remove panel after start is clicked
+            pane.remove(welcomePanel);
+
+            //create sliders
+            JSlider headingSlider = new JSlider(0, 360, 180);
+            JSlider pitchSlider = new JSlider(SwingConstants.VERTICAL, -90, 90, 0);
+            JPanel renderPanel = showTetrahedron(headingSlider, pitchSlider);
+
+            //add slider to pane
+            pane.add(headingSlider, BorderLayout.SOUTH);
+            pane.add(pitchSlider, BorderLayout.EAST);
+            pane.add(renderPanel, BorderLayout.CENTER);
+
+            pane.revalidate();
+            pane.repaint();
+        });
+
+        return welcomePanel;
     }
 
     public static JPanel showTetrahedron(JSlider headingSlider, JSlider pitchSlider){
@@ -208,6 +242,7 @@ public class DemoViewer {
             }
             
             graphics2d.drawImage(img, 0, 0, null);
+            
             
             
         }
