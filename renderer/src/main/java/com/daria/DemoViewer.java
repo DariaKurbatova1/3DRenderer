@@ -28,13 +28,9 @@ public class DemoViewer {
         //display welcome message
         JPanel welcomePanel = showIntro(pane, frame, headingSlider, pitchSlider);
         // panel to display render results
-        JPanel renderPanel = showTetrahedron( headingSlider, pitchSlider);
         
         
         pane.add(welcomePanel, BorderLayout.CENTER);
-
-        headingSlider.addChangeListener(e -> renderPanel.repaint());
-        pitchSlider.addChangeListener(e -> renderPanel.repaint());
 
         frame.setSize(400, 400);
         frame.setVisible(true);
@@ -173,7 +169,7 @@ public class DemoViewer {
         tetrahedronButton.addActionListener(e -> {
             //remove choices and show tetrahedron
             pane.remove(shapeSelectionPanel);
-            JPanel renderPanel = showTetrahedron(headingSlider, pitchSlider);
+            JPanel renderPanel = showTetrahedron(pane, shapeSelectionPanel, headingSlider, pitchSlider);
             pane.add(renderPanel, BorderLayout.CENTER);
 
             headingSlider.addChangeListener(evt -> renderPanel.repaint());
@@ -186,7 +182,7 @@ public class DemoViewer {
         cubeButton.addActionListener(e -> {
             //remove choices and show cube
             pane.remove(shapeSelectionPanel);
-            JPanel renderPanel = showCube(headingSlider, pitchSlider);
+            JPanel renderPanel = showCube(pane, shapeSelectionPanel, headingSlider, pitchSlider);
             pane.add(renderPanel, BorderLayout.CENTER);
 
             headingSlider.addChangeListener(evt -> renderPanel.repaint());
@@ -204,7 +200,7 @@ public class DemoViewer {
     }
 
 
-    public static JPanel showTetrahedron(JSlider headingSlider, JSlider pitchSlider){
+    public static JPanel showTetrahedron(Container pane, JPanel previous, JSlider headingSlider, JSlider pitchSlider){
         JPanel renderPanel = new JPanel() {
         public void paintComponent(Graphics graphics) {
             Graphics2D graphics2d = (Graphics2D) graphics;
@@ -297,9 +293,17 @@ public class DemoViewer {
         }
         
     };
+    JButton backButton = new JButton("Back");
+    renderPanel.add(backButton, BorderLayout.SOUTH);
+    backButton.addActionListener(e -> {
+        pane.remove(renderPanel);
+        pane.add(previous, BorderLayout.CENTER);
+        pane.revalidate();
+        pane.repaint();
+    });
     return renderPanel;
     }
-    public static JPanel showCube(JSlider headingSlider, JSlider pitchSlider){
+    public static JPanel showCube(Container pane, JPanel previous, JSlider headingSlider, JSlider pitchSlider){
         JPanel renderPanel = new JPanel(){
             public void paintComponent(Graphics graphics){
                 Graphics2D graphics2d = (Graphics2D) graphics;
@@ -388,6 +392,14 @@ public class DemoViewer {
             }
             
         };
+        JButton backButton = new JButton("Back");
+        renderPanel.add(backButton, BorderLayout.SOUTH);
+        backButton.addActionListener(e -> {
+            pane.remove(renderPanel);
+            pane.add(previous, BorderLayout.CENTER);
+            pane.revalidate();
+            pane.repaint();
+        });
         return renderPanel;
     }
     public static Matrix3 createTransformedMatrix(double heading, double pitch){
