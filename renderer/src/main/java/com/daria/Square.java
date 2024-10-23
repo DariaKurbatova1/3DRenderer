@@ -14,4 +14,8 @@ public class Square {
         this.v4 = v4;
         this.color = color;
     }
+    public double area() {
+        double sideLength = Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2));
+        return sideLength * sideLength; 
+    }
 }

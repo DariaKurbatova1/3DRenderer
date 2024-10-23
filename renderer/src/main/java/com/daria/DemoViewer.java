@@ -214,11 +214,7 @@ public class DemoViewer {
             BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 
             //add z-buffer
-            double[] zBuffer = new double[img.getWidth() * img.getHeight()];
-            // initialize array with extremely far away depths
-            for (int q = 0; q < zBuffer.length; q++) {
-                zBuffer[q] = Double.NEGATIVE_INFINITY;
-            }
+            double[] zBuffer = createZBuffer(img);
 
             for (Triangle t : tetrahedron.triangles) {
                 Vertex v1 = transform.transform(t.v1);
@@ -306,10 +302,76 @@ public class DemoViewer {
                 double pitch = Math.toRadians(pitchSlider.getValue());
 
                 //get transformed matrix
-                Matrix3 transform = createTransformedMatrix(heading, pitch);
+                Matrix3 transformed = createTransformedMatrix(heading, pitch);
                 
                 BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+                double [] zBuffer = createZBuffer(img);
 
+                for (Square s : cube.squares){
+                    //corners of cube
+                    Vertex v1 = transformed.transform(s.v1);
+                    Vertex v2 = transformed.transform(s.v2);
+                    Vertex v3 = transformed.transform(s.v3);
+                    Vertex v4 = transformed.transform(s.v4);
+
+                    //move vertices to the center of screen
+                    v1.x += getWidth() / 2;
+                    v1.y += getHeight() / 2;
+                    v2.x += getWidth() / 2;
+                    v2.y += getHeight() / 2;
+                    v3.x += getWidth() / 2;
+                    v3.y += getHeight() / 2;
+                    v4.x += getWidth() / 2;
+                    v4.y += getHeight() / 2;
+
+                    //calculate edges for shading
+                    Vertex ab = new Vertex(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z);
+                    Vertex ac = new Vertex(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z);
+                    //callculate normal
+                    Vertex norm = new Vertex(
+                        ab.y * ac.z - ab.z * ac.y,
+                        ab.z * ac.x - ab.x * ac.z,
+                        ab.x * ac.y - ab.y * ac.x
+                    );
+
+                    double normalLength = calculateNormalLength(norm);
+                    //calculate cosine between triangle normal and light direction
+                    double angleCos = Math.abs(norm.z);
+
+                    //get shade
+                    Color shadedColor = getShade(s.color, angleCos);
+
+                    //calculate bounds for square
+                    int minX = (int) Math.max(0, Math.ceil(Math.min(v1.x, Math.min(v2.x, Math.min(v3.x, v4.x)))));
+                    int maxX = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(v1.x, Math.max(v2.x, Math.max(v3.x, v4.x)))));
+                    int minY = (int) Math.max(0, Math.ceil(Math.min(v1.y, Math.min(v2.y, Math.min(v3.y, v4.y)))));
+                    int maxY = (int) Math.min(img.getHeight() - 1, Math.floor(Math.max(v1.y, Math.max(v2.y, Math.max(v3.y, v4.y)))));
+                    
+                    //square area
+                    double squareArea = s.area();
+                    //color pixels and shade
+                    for (int y = minY; y <= maxY; y++) {
+                        for (int x = minX; x <= maxX; x++) {
+                            double b1 = 
+                            ((y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - x)) / squareArea;
+                            double b2 =
+                            ((y - v1.y) * (v3.x - v1.x) + (v3.y - v1.y) * (v1.x - x)) / squareArea;
+                            double b3 =
+                            ((y - v2.y) * (v1.x - v2.x) + (v1.y - v2.y) * (v2.x - x)) / squareArea;
+                            if (b1 >= 0 && b1 <= 1 && b2 >= 0 && b2 <= 1 && b3 >= 0 && b3 <= 1) {
+
+                                double depth = b1 * v1.z + b2 * v2.z + b3 * v3.z;
+                                int zIndex = y * img.getWidth() + x;
+                                if (zBuffer[zIndex] < depth) {
+                                    img.setRGB(x, y, shadedColor.getRGB());
+                                    zBuffer[zIndex] = depth;
+                                }
+                            }
+                        }
+                    }
+
+                    }
+                    graphics2d.drawImage(img, 0, 0, null);
 
             }
             
