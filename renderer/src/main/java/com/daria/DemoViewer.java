@@ -11,6 +11,7 @@ import com.daria.Tetrahedron;
 //import Path2D;
 public class DemoViewer {
 
+    private static JPanel previousPanel; 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         Container pane = frame.getContentPane();
@@ -121,7 +122,8 @@ public class DemoViewer {
         startButton.addActionListener(e -> {
             //remove panel after start is clicked
             pane.remove(welcomePanel);
-
+            previousPanel = welcomePanel;
+            
             //show shape choices to user
             JPanel shapeChoicesPanel = showShapeChoices(pane, headingSlider, pitchSlider);
             pane.add(shapeChoicesPanel, BorderLayout.CENTER);
@@ -150,13 +152,23 @@ public class DemoViewer {
         JButton tetrahedronButton = new JButton("Tetrahedron");
         JButton cubeButton = new JButton("Cube");
         JButton sphereButton = new JButton("Sphere");
+        JButton backButton = new JButton("Back");
 
         buttonPanel.add(tetrahedronButton);
         buttonPanel.add(cubeButton);
         buttonPanel.add(sphereButton);
+        shapeSelectionPanel.add(backButton, BorderLayout.SOUTH);
 
         //add button pannel to shape selection pannel
         shapeSelectionPanel.add(buttonPanel, BorderLayout.CENTER);
+
+        backButton.addActionListener(e -> {
+            pane.remove(shapeSelectionPanel);
+            pane.add(previousPanel, BorderLayout.CENTER);
+
+            pane.revalidate();
+            pane.repaint();
+        });
 
         tetrahedronButton.addActionListener(e -> {
             //remove choices and show tetrahedron
