@@ -23,4 +23,4 @@ http://blog.rogach.org/2015/08/how-to-create-your-own-simple-3d-render.html
 The tutorial above was used to learn how to create a 3-d tetrahedron. The user controls and cube rendering were added on to it by me. 
 
 ## Known issues
-The rendering of the cube is not fully correct. It is rendered as 6 faces formed of triangles, not squares
+The rendering of the cube is not fully correct. It is rendered as 6 faces formed of triangles, not squares. The sphere rendering is not implemented
