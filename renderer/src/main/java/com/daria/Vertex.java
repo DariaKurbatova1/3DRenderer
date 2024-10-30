@@ -13,4 +13,13 @@ public class Vertex {
         this.y = y;
         this.z = z;
     }
+    public double getNormalLenght(){
+        double normalLength = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        if (normalLength != 0) {
+            this.x /= normalLength;
+            this.y /= normalLength;
+            this.z /= normalLength;
+        }
+        return normalLength;
+    }
 }
