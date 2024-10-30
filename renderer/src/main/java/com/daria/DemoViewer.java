@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import com.daria.Triangle;
 import com.daria.Tetrahedron;
+import com.daria.ShapeFactory;
 
 //import Path2D;
 public class DemoViewer {
@@ -74,35 +75,7 @@ public class DemoViewer {
 
 
     
-    public static Tetrahedron creatTetrahedron(){
-        java.util.List<Triangle> tris = new ArrayList<>();
-            tris.add(new Triangle(
-                    new Vertex(100, 100, 100),
-                    new Vertex(-100, -100, 100),
-                    new Vertex(-100, 100, -100),
-                    Color.WHITE
-                ));
-                tris.add(new Triangle(
-                    new Vertex(100, 100, 100),
-                    new Vertex(-100, -100, 100),
-                    new Vertex(100, -100, -100),
-                    Color.RED
-                ));
-                tris.add(new Triangle(
-                    new Vertex(-100, 100, -100),
-                    new Vertex(100, -100, -100),
-                    new Vertex(100, 100, 100),
-                    Color.GREEN
-                ));
-                tris.add(new Triangle(
-                    new Vertex(-100, 100, -100),
-                    new Vertex(100, -100, -100),
-                    new Vertex(-100, -100, 100),
-                    Color.BLUE
-                ));
-        Tetrahedron tetrahedron = new Tetrahedron(tris);
-        return tetrahedron;
-    }
+    
     public static JPanel showIntro(Container pane, JFrame frame, JSlider headingSlider, JSlider pitchSlider){
         JPanel welcomePanel = new JPanel();
         welcomePanel.setLayout(new BorderLayout());
@@ -169,7 +142,8 @@ public class DemoViewer {
         tetrahedronButton.addActionListener(e -> {
             //remove choices and show tetrahedron
             pane.remove(shapeSelectionPanel);
-            JPanel renderPanel = showTetrahedron(pane, shapeSelectionPanel, headingSlider, pitchSlider);
+            Tetrahedron tetrahedron = ShapeFactory.createTetrahedron();
+            JPanel renderPanel = showTetrahedron(pane, shapeSelectionPanel, headingSlider, pitchSlider, tetrahedron);
             pane.add(renderPanel, BorderLayout.CENTER);
 
             headingSlider.addChangeListener(evt -> renderPanel.repaint());
@@ -182,7 +156,8 @@ public class DemoViewer {
         cubeButton.addActionListener(e -> {
             //remove choices and show cube
             pane.remove(shapeSelectionPanel);
-            JPanel renderPanel = showCube(pane, shapeSelectionPanel, headingSlider, pitchSlider);
+            Cube cube = ShapeFactory.createCube();
+            JPanel renderPanel = showCube(pane, shapeSelectionPanel, headingSlider, pitchSlider, cube);
             pane.add(renderPanel, BorderLayout.CENTER);
 
             headingSlider.addChangeListener(evt -> renderPanel.repaint());
@@ -200,7 +175,7 @@ public class DemoViewer {
     }
 
 
-    public static JPanel showTetrahedron(Container pane, JPanel previous, JSlider headingSlider, JSlider pitchSlider){
+    public static JPanel showTetrahedron(Container pane, JPanel previous, JSlider headingSlider, JSlider pitchSlider, Tetrahedron tetrahedron){
         JPanel renderPanel = new JPanel() {
         public void paintComponent(Graphics graphics) {
             Graphics2D graphics2d = (Graphics2D) graphics;
@@ -208,7 +183,6 @@ public class DemoViewer {
             graphics2d.fillRect(0, 0, getWidth(), getHeight());
 
             //create a tetrahedron
-            Tetrahedron tetrahedron = creatTetrahedron();
             
             //heading for left-right rotation
             double heading = Math.toRadians(headingSlider.getValue());
@@ -303,14 +277,13 @@ public class DemoViewer {
     });
     return renderPanel;
     }
-    public static JPanel showCube(Container pane, JPanel previous, JSlider headingSlider, JSlider pitchSlider){
+    public static JPanel showCube(Container pane, JPanel previous, JSlider headingSlider, JSlider pitchSlider, Cube cube){
         JPanel renderPanel = new JPanel(){
             public void paintComponent(Graphics graphics){
                 Graphics2D graphics2d = (Graphics2D) graphics;
                 graphics2d.setColor(Color.BLACK);
                 graphics2d.fillRect(0, 0, getWidth(), getHeight());
 
-                Cube cube = createCube();
                 //left-right rotation
                 double heading = Math.toRadians(headingSlider.getValue());
 
@@ -427,28 +400,5 @@ public class DemoViewer {
         }
         return zBuffer;
     }
-    //https://craigrichardsonportfolio.wordpress.com/2016/03/04/defining-a-3d-cube-multiple-coordinate-spaces/
-    public static Cube createCube() {
-        java.util.List<Square> squares = new ArrayList<>();
-        
-        //create vertices of the cube (each corner point)
-        Vertex v1 = new Vertex(-100, -100, -100);
-        Vertex v2 = new Vertex(100, -100, -100);
-        Vertex v3 = new Vertex(100, 100, -100);
-        Vertex v4 = new Vertex(-100, 100, -100);
-        Vertex v5 = new Vertex(-100, -100, 100);
-        Vertex v6 = new Vertex(100, -100, 100);
-        Vertex v7 = new Vertex(100, 100, 100);
-        Vertex v8 = new Vertex(-100, 100, 100);
-        
-        //create faces of cube with 4 corners on eachh
-        squares.add(new Square(v1, v2, v3, v4, Color.RED));  
-        squares.add(new Square(v5, v6, v7, v8, Color.GREEN));  
-        squares.add(new Square(v1, v2, v6, v5, Color.BLUE));  
-        squares.add(new Square(v4, v3, v7, v8, Color.YELLOW));  
-        squares.add(new Square(v2, v3, v7, v6, Color.CYAN));   
-        squares.add(new Square(v1, v4, v8, v5, Color.MAGENTA)); 
     
-        return new Cube(squares);
-    }
 }
