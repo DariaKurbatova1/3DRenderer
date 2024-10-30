@@ -36,30 +36,7 @@ public class DemoViewer {
         frame.setSize(400, 400);
         frame.setVisible(true);
 
-        
-
-        
-
     }
-
-
-
-
-
-    private static double calculateNormalLength(Vertex norm) {
-
-        double normalLength = Math.sqrt(norm.x * norm.x + norm.y * norm.y + norm.z * norm.z);
-        if (normalLength != 0) {
-            norm.x /= normalLength;
-            norm.y /= normalLength;
-            norm.z /= normalLength;
-        }
-        return normalLength;
-    }
-
-
-
-
     public static Color getShade(Color color, double shade) {
         double redLinear = Math.pow(color.getRed(), 2.4) * shade;
         double greenLinear = Math.pow(color.getGreen(), 2.4) * shade;
@@ -71,11 +48,6 @@ public class DemoViewer {
     
         return new Color(red, green, blue);
     }
-
-
-
-    
-    
     public static JPanel showIntro(Container pane, JFrame frame, JSlider headingSlider, JSlider pitchSlider){
         JPanel welcomePanel = new JPanel();
         welcomePanel.setLayout(new BorderLayout());
@@ -223,7 +195,7 @@ public class DemoViewer {
                     ab.x * ac.y - ab.y * ac.x
                 );
 
-                double normalLength = calculateNormalLength(norm);
+                double normalLength = norm.getNormalLenght();
                 //calculate cosine between triangle normal and light direction
                 double angleCos = Math.abs(norm.z);
 
@@ -323,7 +295,7 @@ public class DemoViewer {
                         ab.x * ac.y - ab.y * ac.x
                     );
 
-                    double normalLength = calculateNormalLength(norm);
+                    double normalLength = norm.getNormalLenght();
                     //calculate cosine between triangle normal and light direction
                     double angleCos = Math.abs(norm.z);
 
